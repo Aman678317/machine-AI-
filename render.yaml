@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: crypto-sentiment-dashboard
+    env: python
+    buildCommand: |
+      pip install -r crypto-sentiment-analysis/requirements.txt
+      python crypto-sentiment-analysis/generate_sample_data.py
+    startCommand: streamlit run crypto-sentiment-analysis/dashboard/app.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
