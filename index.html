@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrimeTrade.ai | Bitcoin Sentiment vs Trader Performance Analysis</title>
+  <meta name="description" content="A premium quant analysis of how Bitcoin Fear & Greed sentiment influences trader behavior and profitability on the Hyperliquid decentralized exchange.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #080b11;
+      --card-bg: rgba(22, 27, 34, 0.45);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f0f3f6;
+      --text-muted: #8b949e;
+      --primary: #58a6ff;
+      --primary-glow: rgba(88, 166, 255, 0.15);
+      --accent: #8a2be2;
+      --accent-glow: rgba(138, 43, 226, 0.2);
+      --success: #3fb950;
+      --danger: #f85149;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Gradient background accents */
+    .bg-gradient-accent-1 {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      top: -150px;
+      left: -150px;
+      background: radial-gradient(circle, rgba(88, 166, 255, 0.12) 0%, rgba(0,0,0,0) 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .bg-gradient-accent-2 {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      top: 40%;
+      right: -200px;
+      background: radial-gradient(circle, rgba(138, 43, 226, 0.08) 0%, rgba(0,0,0,0) 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Header */
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #58a6ff 0%, #8a2be2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #58a6ff 0%, #8a2be2 100%);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px var(--primary-glow);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(138, 43, 226, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      box-shadow: none;
+      color: var(--text-main);
+      margin-left: 12px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 120px 0 80px 0;
+      text-align: center;
+    }
+
+    .badge {
+      background: rgba(88, 166, 255, 0.1);
+      border: 1px solid rgba(88, 166, 255, 0.2);
+      color: var(--primary);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #ffffff 30%, #a5c7f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 40px auto;
+      font-weight: 400;
+    }
+
+    /* Grid Section */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      padding: 60px 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 32px;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(88, 166, 255, 0.25);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Dashboard CTA Banner */
+    .cta-banner {
+      background: radial-gradient(circle at top right, rgba(138, 43, 226, 0.15), rgba(88, 166, 255, 0.05));
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      border-radius: 24px;
+      padding: 60px;
+      text-align: center;
+      margin: 80px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+
+    .cta-banner p {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto 32px auto;
+    }
+
+    /* Footer */
+    footer {
+      padding: 60px 0;
+      border-top: 1px solid var(--card-border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 38px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .cta-banner {
+        padding: 40px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-gradient-accent-1"></div>
+  <div class="bg-gradient-accent-2"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <div class="logo">
+        📊 PrimeTrade.ai
+      </div>
+      <div class="nav-links">
+        <a href="#findings" class="nav-link">Insights</a>
+        <a href="https://github.com/Aman678317/machine-AI-" class="nav-link" target="_blank">GitHub Code</a>
+        <a href="#deploy" class="btn">Launch Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main class="container">
+    <section class="hero">
+      <div class="badge">Decentralized Quant Research</div>
+      <h1>Bitcoin Sentiment vs<br>Trader Performance Analysis</h1>
+      <p>
+        A premium end-to-end data science study analyzing how market fear and greed affects leverage, trading frequency, and overall profitability on the Hyperliquid DEX.
+      </p>
+      <div>
+        <a href="#deploy" class="btn">Launch Live Dashboard</a>
+        <a href="https://github.com/Aman678317/machine-AI-" class="btn btn-secondary" target="_blank">View on GitHub</a>
+      </div>
+    </section>
+
+    <!-- Key Insights -->
+    <section id="findings">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <div class="badge" style="background: rgba(138, 43, 226, 0.1); border-color: rgba(138, 43, 226, 0.2); color: #c084fc;">Key Discoveries</div>
+        <h2 style="font-family: 'Outfit', sans-serif; font-size: 36px; font-weight: 800;">Institutional-Grade Behavioral Findings</h2>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">📉</div>
+          <h3>Sentiment-Linked Profitability</h3>
+          <p>
+            ANOVA and t-testing confirm a statistically significant drop in trader PnL during Fear periods (p < 0.05). Retail traders underperform heavily in panic regimes.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>The Leverage Trap</h3>
+          <p>
+            Traders counter-intuitively increase leverage by 15-20% during Fear periods to "revenge trade" losses, resulting in high liquidations and drawdown.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🏆</div>
+          <h3>Sentiment-Agnostic Elites</h3>
+          <p>
+            Elite traders remain completely unaffected by external market sentiment, maintaining consistent Sharpe ratios and lower leverage across all regimes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deployment CTA -->
+    <section id="deploy" class="cta-banner">
+      <h2>Explore Interactive Dashboard</h2>
+      <p>
+        Filter by sentiment regimes, inspect trader segmentations via K-Means clustering, and run statistical hypothesis tests live on historical datasets.
+      </p>
+      <a href="https://crypto-sentiment-dashboard.onrender.com" class="btn" target="_blank">Open Live on Render</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 PrimeTrade.ai. All rights reserved. Powered by Streamlit, Render, and Vercel.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
