@@ -77,6 +77,20 @@ SENTIMENT_PALETTE = {
 @st.cache_data(show_spinner="Loading datasets…")
 def load_data():
     cleaned_path = OUTPUTS_DIR / "cleaned_data.csv"
+    
+    # Automatically generate sample datasets if they are missing
+    raw_fg = DATA_DIR / "fear_greed.csv"
+    raw_hist = DATA_DIR / "historical_data.csv"
+    if not raw_fg.exists() or not raw_hist.exists():
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        from generate_sample_data import generate_fear_greed, generate_historical
+        fg_df = generate_fear_greed(500)
+        hist_df = generate_historical(5000)
+        fg_df.to_csv(raw_fg, index=False)
+        hist_df.to_csv(raw_hist, index=False)
+
+    OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+
     if cleaned_path.exists():
         df = pd.read_csv(cleaned_path, low_memory=False)
         df["trade_date"] = pd.to_datetime(df["trade_date"], errors="coerce")
