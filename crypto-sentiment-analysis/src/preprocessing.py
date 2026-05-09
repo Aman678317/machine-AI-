@@ -47,7 +47,7 @@ def clean_fear_greed(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
 
     # ── 1. Parse dates ──────────────────────────────────────────────────────────
-    df["date"] = pd.to_datetime(df["date"], infer_datetime_format=True, errors="coerce")
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
     n_bad = df["date"].isna().sum()
     if n_bad:
         logger.warning(f"  Dropped {n_bad} rows with unparseable dates.")
@@ -100,7 +100,7 @@ def _parse_timestamp(series: pd.Series) -> pd.Series:
         else:
             return pd.to_datetime(numeric, unit="s", errors="coerce", utc=True)
     # Fallback: ISO string
-    return pd.to_datetime(series, infer_datetime_format=True, errors="coerce", utc=True)
+    return pd.to_datetime(series, errors="coerce", utc=True)
 
 
 def clean_historical_data(df: pd.DataFrame) -> pd.DataFrame:
