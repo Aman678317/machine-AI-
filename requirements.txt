@@ -1,0 +1,29 @@
+# Core Data Science
+pandas==2.1.4
+numpy==1.26.3
+scipy==1.12.0
+
+# Visualization
+matplotlib==3.8.2
+seaborn==0.13.1
+plotly==5.18.0
+
+# Machine Learning
+scikit-learn==1.4.0
+xgboost==2.0.3
+
+# Dashboard
+streamlit==1.31.0
+
+# Notebook
+jupyter==1.0.0
+ipykernel==6.28.0
+nbformat==5.9.2
+
+# Utilities
+python-dateutil==2.8.2
+pytz==2023.3.post1
+tqdm==4.66.1
+colorlog==6.8.2
+openpyxl==3.1.2
+kaleido==0.2.1
